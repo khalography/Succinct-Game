@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () { const gameContainer = document.getElementById("game-container"); let activeSlot = null; let score = 0; let misses = 0; let gameInterval; let intervalTime = 2000; let difficultyIncreased = false;
+document.addEventListener("DOMContentLoaded", function () { const gameContainer = document.getElementById("game-container"); let activeSlot = null; let score = 0; let misses = 0; let gameInterval; let intervalTime = 2000;
 
 const allImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/all.png";
 const flappyImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/Flappy.png";
@@ -9,7 +9,15 @@ function createBoard() {
         <h1>Succinct</h1>
         <p>Score: <span id="score">0</span> | Misses Left: <span id="misses">5</span></p>
         <div id="game-board">
-            ${Array.from({ length: 9 }, (_, i) => `<div class="slot" data-key="${i + 1}"></div>`).join('')}
+            <div class="slot" data-key="1"></div>
+            <div class="slot" data-key="2"></div>
+            <div class="slot" data-key="3"></div>
+            <div class="slot" data-key="4"></div>
+            <div class="slot" data-key="5"></div>
+            <div class="slot" data-key="6"></div>
+            <div class="slot" data-key="7"></div>
+            <div class="slot" data-key="8"></div>
+            <div class="slot" data-key="9"></div>
         </div>
         <button id="restart-btn" style="display: none;">Restart Game</button>
     `;
@@ -40,26 +48,22 @@ function showStar() {
         if (activeSlot.style.backgroundImage.includes(flappyImage)) {
             activeSlot.style.backgroundImage = `url('${allImage}')`;
             misses++;
-            document.getElementById("misses").textContent = 5 - misses;
+            document.getElementById("misses").innerText = 5 - misses;
             checkGameOver();
         }
-    }, intervalTime);
+    }, intervalTime - 500);
 }
 
 function hitStar(slot) {
     if (slot === activeSlot && slot.style.backgroundImage.includes(flappyImage)) {
         slot.style.backgroundImage = `url('${crisisImage}')`;
         score++;
-        document.getElementById("score").textContent = score;
+        document.getElementById("score").innerText = score;
 
-        if (score >= 20 && !difficultyIncreased) {
-            intervalTime = 1800;
-            difficultyIncreased = true;
+        if (score >= 20 && intervalTime > 500) {
+            intervalTime -= 200; 
         }
-        if (score % 5 === 0 && score >= 20) {
-            intervalTime = Math.max(500, intervalTime - 200);
-        }
-        
+
         setTimeout(showStar, 500);
     }
 }
@@ -80,7 +84,6 @@ function restartGame() {
     score = 0;
     misses = 0;
     intervalTime = 2000;
-    difficultyIncreased = false;
     createBoard();
     gameInterval = setInterval(showStar, intervalTime);
 }
