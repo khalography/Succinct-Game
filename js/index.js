@@ -5,6 +5,10 @@ document.addEventListener("DOMContentLoaded", function () {
     let misses = 0;
     let gameInterval;
 
+    const allImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/all.png";
+    const flappyImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/Flappy.svg";
+    const crisisImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/Crisis.svg";
+
     function createBoard() {
         gameContainer.innerHTML = `
             <h1>Succinct</h1>
@@ -23,7 +27,8 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
 
         document.querySelectorAll(".slot").forEach(slot => {
-            slot.style.backgroundImage = "url('../all.png')";
+            slot.style.backgroundImage = `url('${allImage}')`;
+            slot.style.backgroundSize = "cover";
             slot.addEventListener("click", () => hitStar(slot));
         });
 
@@ -31,20 +36,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function getRandomSlot() {
-        return document.querySelectorAll(".slot")[Math.floor(Math.random() * 9)];
+        const slots = document.querySelectorAll(".slot");
+        return slots[Math.floor(Math.random() * slots.length)];
     }
 
     function showStar() {
         if (activeSlot) {
-            activeSlot.style.backgroundImage = "url('../all.png')";
+            activeSlot.style.backgroundImage = `url('${allImage}')`;
         }
 
         activeSlot = getRandomSlot();
-        activeSlot.style.backgroundImage = "url('../Flappy.png')";
+        activeSlot.style.backgroundImage = `url('${flappyImage}')`;
 
         setTimeout(() => {
-            if (activeSlot.style.backgroundImage.includes("Flappy.png")) {
-                activeSlot.style.backgroundImage = "url('../all.png')";
+            if (activeSlot.style.backgroundImage.includes(flappyImage)) {
+                activeSlot.style.backgroundImage = `url('${allImage}')`;
                 misses++;
                 checkGameOver();
             }
@@ -52,8 +58,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function hitStar(slot) {
-        if (slot === activeSlot && slot.style.backgroundImage.includes("Flappy.png")) {
-            slot.style.backgroundImage = "url('../Crisis.png')";
+        if (slot === activeSlot && slot.style.backgroundImage.includes(flappyImage)) {
+            slot.style.backgroundImage = `url('${crisisImage}')`;
             score++;
             setTimeout(showStar, 500);
         }
