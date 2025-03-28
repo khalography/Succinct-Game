@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () { const gameContainer = document.getElementById("game-container"); let activeSlot = null; let score = 0; let misses = 0; let gameInterval; let intervalTime = 2000;
+document.addEventListener("DOMContentLoaded", function () { const gameContainer = document.getElementById("game-container"); let activeSlot = null; let score = 0; let misses = 0; let gameInterval; let intervalTime = 20000;
 
 const allImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/all.png";
 const flappyImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/Flappy.png";
@@ -48,7 +48,7 @@ function showStar() {
         if (activeSlot.style.backgroundImage.includes(flappyImage)) {
             activeSlot.style.backgroundImage = `url('${allImage}')`;
             misses++;
-            document.getElementById("misses").innerText = 5 - misses;
+            document.getElementById("misses").innerText = 50 - misses;
             checkGameOver();
         }
     }, intervalTime - 5000);
