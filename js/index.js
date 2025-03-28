@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (misses >= 20) {
             gameContainer.innerHTML = `
                 <h1>Game Over</h1>
-                <p>Your Score: ${score}</p>
+                <h1>Your Score: ${score}</h1>
                 <button id="restart-btn">Restart Game</button>
             `;
             document.getElementById("restart-btn").addEventListener("click", restartGame);
