@@ -4,7 +4,7 @@ let activeSlot = null;
 let score = 0;
 let misses = 0;
 let gameInterval;
-let gameSpeed = 3000; // Extremely slow at start
+let gameSpeed = 33000; 
 let shouldCountMisses = false;
 
 const allImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/all.png";  
@@ -60,7 +60,7 @@ function showStar() {
                 checkGameOver();  
             }  
         }  
-    }, gameSpeed - 500);  
+    }, gameSpeed - 1500);  
 }  
 
 function hitStar(slot) {  
@@ -71,11 +71,11 @@ function hitStar(slot) {
 
         if (score >= 20) {  
             shouldCountMisses = true;  
-            gameSpeed = Math.max(800, gameSpeed - 200); // Increase difficulty gradually  
+            gameSpeed = Math.max(800, gameSpeed - 20); // Increase difficulty gradually  
             restartGameInterval();  
         }  
 
-        setTimeout(showStar, 500);  
+        setTimeout(showStar, 1500);  
     }  
 }  
 
@@ -94,7 +94,7 @@ function checkGameOver() {
 function restartGame() {  
     score = 0;  
     misses = 0;  
-    gameSpeed = 3000;  
+    gameSpeed = 33000;  
     shouldCountMisses = false;  
     createBoard();  
     restartGameInterval();  
