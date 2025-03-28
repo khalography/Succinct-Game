@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let score = 0;
     let misses = 0;
     let gameInterval;
-    let gameSpeed = 5000; // Start slower but reasonable
+    let gameSpeed = 5000; // Start slow
     let shouldCountMisses = false;
 
     const allImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/all.png";
@@ -70,8 +70,12 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("score").innerText = score;
 
             if (score >= 20) {
-                shouldCountMisses = true;
-                gameSpeed = Math.max(800, gameSpeed * 0.9); // Reduce speed gradually
+                shouldCountMisses = true; // Start counting misses after 20 points
+            }
+
+            // Increase difficulty every 20 points
+            if (score % 20 === 0) {
+                gameSpeed = Math.max(800, gameSpeed * 0.9); // Reduce speed by 10% per stage
                 restartGameInterval();
             }
 
@@ -94,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function restartGame() {
         score = 0;
         misses = 0;
-        gameSpeed = 5000;
+        gameSpeed = 5000; // Reset to slow speed
         shouldCountMisses = false;
         createBoard();
         restartGameInterval();
