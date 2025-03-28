@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let score = 0;
     let misses = 0;
     let gameInterval;
-    let gameSpeed = 5000; // Start slow (5 sec per round)
+    let gameSpeed = 5000;
     let shouldCountMisses = false;
 
     const allImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/all.png";
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
             score++;
             document.getElementById("score").innerText = score;
 
-            if (score >= 20) {
+            if (score >= 1) {
                 shouldCountMisses = true; 
             }
 
