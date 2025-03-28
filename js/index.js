@@ -51,7 +51,7 @@ function showStar() {
             document.getElementById("misses").innerText = 5 - misses;
             checkGameOver();
         }
-    }, intervalTime - 500);
+    }, intervalTime - 5000);
 }
 
 function hitStar(slot) {
@@ -60,11 +60,11 @@ function hitStar(slot) {
         score++;
         document.getElementById("score").innerText = score;
 
-        if (score >= 20 && intervalTime > 500) {
+        if (score >= 20 && intervalTime > 5000) {
             intervalTime -= 200; 
         }
 
-        setTimeout(showStar, 500);
+        setTimeout(showStar, 5000);
     }
 }
 
@@ -83,7 +83,7 @@ function checkGameOver() {
 function restartGame() {
     score = 0;
     misses = 0;
-    intervalTime = 2000;
+    intervalTime = 20000;
     createBoard();
     gameInterval = setInterval(showStar, intervalTime);
 }
