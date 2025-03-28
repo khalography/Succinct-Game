@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 misses++;
                 checkGameOver();
             }
-        }, 10000);
+        }, 20000);
     }
 
     function hitStar(slot) {
