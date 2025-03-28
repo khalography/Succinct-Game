@@ -1,6 +1,6 @@
 body {
     background: url('../screen.png') no-repeat center center fixed;
-    background-size: cover;
+    background-size: 100vw 100vh;
     text-align: center;
     font-family: Arial, sans-serif;
     color: #fff;
