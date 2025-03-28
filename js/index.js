@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () { const gameContainer = document.getElementById("game-container"); let activeSlot = null; let score = 0; let misses = 0; let gameInterval; let intervalTime = 20000;
+document.addEventListener("DOMContentLoaded", function () { const gameContainer = document.getElementById("game-container"); let activeSlot = null; let score = 0; let misses = 0; let gameInterval; let spawnTime = 2000; // Start easy
 
 const allImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/all.png";
 const flappyImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/Flappy.png";
@@ -48,23 +48,22 @@ function showStar() {
         if (activeSlot.style.backgroundImage.includes(flappyImage)) {
             activeSlot.style.backgroundImage = `url('${allImage}')`;
             misses++;
-            document.getElementById("misses").innerText = 50 - misses;
+            document.getElementById("misses").textContent = 5 - misses;
             checkGameOver();
         }
-    }, intervalTime - 5000);
+    }, spawnTime - 500);
 }
 
 function hitStar(slot) {
     if (slot === activeSlot && slot.style.backgroundImage.includes(flappyImage)) {
         slot.style.backgroundImage = `url('${crisisImage}')`;
         score++;
-        document.getElementById("score").innerText = score;
+        document.getElementById("score").textContent = score;
 
-        if (score >= 20 && intervalTime > 5000) {
-            intervalTime -= 200; 
+        if (score >= 20) {
+            spawnTime = Math.max(500, spawnTime - 100); // Gradually increases difficulty
         }
-
-        setTimeout(showStar, 5000);
+        setTimeout(showStar, 500);
     }
 }
 
@@ -83,13 +82,13 @@ function checkGameOver() {
 function restartGame() {
     score = 0;
     misses = 0;
-    intervalTime = 20000;
+    spawnTime = 2000; // Reset difficulty to easy
     createBoard();
-    gameInterval = setInterval(showStar, intervalTime);
+    gameInterval = setInterval(showStar, spawnTime);
 }
 
 createBoard();
-gameInterval = setInterval(showStar, intervalTime);
+gameInterval = setInterval(showStar, spawnTime);
 
 document.addEventListener("keydown", (event) => {
     const key = parseInt(event.key);
