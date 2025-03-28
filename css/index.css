@@ -24,7 +24,7 @@ body {
 h1 {
     font-size: 2em;
     margin-bottom: 20px;
-    color: #fff;
+    color: #ffff;
 }
 
 #game-board {
@@ -51,9 +51,9 @@ h1 {
 
 #restart-btn {
     padding: 10px 20px;
-    font-size: 1.2em;
+    font-size: 1.3em;
     color: white;
-    background-color: #ff69b4;
+    background-color: green;
     border: none;
     cursor: pointer;
     margin-top: 20px;
