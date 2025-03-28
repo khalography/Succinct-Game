@@ -54,14 +54,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 misses++;
                 checkGameOver();
             }
-        }, 20000);
+        }, 10000);
     }
 
     function hitStar(slot) {
         if (slot === activeSlot && slot.style.backgroundImage.includes(flappyImage)) {
             slot.style.backgroundImage = `url('${crisisImage}')`;
             score++;
-            setTimeout(showStar, 500);
+            setTimeout(showStar, 5000);
         }
     }
 
@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
         score = 0;
         misses = 0;
         createBoard();
-        gameInterval = setInterval(showStar, 2000);
+        gameInterval = setInterval(showStar, 20000);
     }
 
     createBoard();
