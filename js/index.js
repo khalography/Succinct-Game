@@ -6,8 +6,8 @@ document.addEventListener("DOMContentLoaded", function () {
     let gameInterval;
 
     const allImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/all.png";
-    const flappyImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/Flappy.svg";
-    const crisisImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/Crisis.svg";
+    const flappyImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/Flappy.png";
+    const crisisImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/Crisis.png";
 
     function createBoard() {
         gameContainer.innerHTML = `
