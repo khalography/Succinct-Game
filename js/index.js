@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let score = 0;
     let misses = 0;
     let gameInterval;
-    let gameSpeed = 5000; // Start slow
+    let gameSpeed = 5000; // Start slow (5 sec per round)
     let shouldCountMisses = false;
 
     const allImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/all.png";
@@ -51,16 +51,21 @@ document.addEventListener("DOMContentLoaded", function () {
         activeSlot = getRandomSlot();
         activeSlot.style.backgroundImage = `url('${flappyImage}')`;
 
+        // Wait for 5 seconds, then randomize again
         setTimeout(() => {
-            if (activeSlot.style.backgroundImage.includes(flappyImage)) {
+            if (activeSlot && activeSlot.style.backgroundImage.includes(flappyImage)) {
                 activeSlot.style.backgroundImage = `url('${allImage}')`;
+
                 if (shouldCountMisses) {
                     misses++;
                     document.getElementById("misses").innerText = 20 - misses;
                     checkGameOver();
                 }
+
+                // Show new random star
+                showStar();
             }
-        }, 1500);
+        }, 5000);
     }
 
     function hitStar(slot) {
@@ -70,22 +75,21 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("score").innerText = score;
 
             if (score >= 20) {
-                shouldCountMisses = true; // Start counting misses after 20 points
+                shouldCountMisses = true; 
             }
 
             // Increase difficulty every 20 points
             if (score % 20 === 0) {
-                gameSpeed = Math.max(800, gameSpeed * 0.9); // Reduce speed by 10% per stage
-                restartGameInterval();
+                gameSpeed = Math.max(800, gameSpeed * 0.9); 
             }
 
-            setTimeout(showStar, 1500);
+            // Show new star immediately
+            setTimeout(showStar, 1000);
         }
     }
 
     function checkGameOver() {
         if (misses >= 20) {
-            clearInterval(gameInterval);
             gameContainer.innerHTML = `
                 <h1>Game Over</h1>
                 <p>Your Score: ${score}</p>
@@ -98,19 +102,14 @@ document.addEventListener("DOMContentLoaded", function () {
     function restartGame() {
         score = 0;
         misses = 0;
-        gameSpeed = 5000; // Reset to slow speed
+        gameSpeed = 5000; 
         shouldCountMisses = false;
         createBoard();
-        restartGameInterval();
-    }
-
-    function restartGameInterval() {
-        clearInterval(gameInterval);
-        gameInterval = setInterval(showStar, gameSpeed);
+        showStar();
     }
 
     createBoard();
-    restartGameInterval();
+    showStar(); 
 
     document.addEventListener("keydown", (event) => {
         const key = parseInt(event.key);
