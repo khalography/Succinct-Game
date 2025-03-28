@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+ document.addEventListener("DOMContentLoaded", function () {
     const gameContainer = document.getElementById("game-container");
     let activeSlot = null;
     let score = 0;
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (slot === activeSlot && slot.style.backgroundImage.includes(flappyImage)) {
             slot.style.backgroundImage = `url('${crisisImage}')`;
             score++;
-            setTimeout(showStar, 5000);
+            setTimeout(showStar, 1000);
         }
     }
 
@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
         score = 0;
         misses = 0;
         createBoard();
-        gameInterval = setInterval(showStar, 20000);
+        gameInterval = setInterval(showStar, 2000);
     }
 
     createBoard();
