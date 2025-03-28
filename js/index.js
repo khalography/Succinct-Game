@@ -1,10 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () { const gameContainer = document.getElementById("game-container"); 
-                                                           let activeSlot = null; 
-                                                           let score = 0; 
-                                                           let misses = 0; 
-                                                           let gameInterval; 
-                                                           let difficulty = 2000; 
-                                                           let isHardMode = false;
+document.addEventListener("DOMContentLoaded", function () { const gameContainer = document.getElementById("game-container"); let activeSlot = null; let score = 0; let misses = 0; let gameInterval; let intervalTime = 2000; let difficultyIncreased = false;
 
 const allImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/all.png";
 const flappyImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/Flappy.png";
@@ -15,15 +9,7 @@ function createBoard() {
         <h1>Succinct</h1>
         <p>Score: <span id="score">0</span> | Misses Left: <span id="misses">5</span></p>
         <div id="game-board">
-            <div class="slot" data-key="1"></div>
-            <div class="slot" data-key="2"></div>
-            <div class="slot" data-key="3"></div>
-            <div class="slot" data-key="4"></div>
-            <div class="slot" data-key="5"></div>
-            <div class="slot" data-key="6"></div>
-            <div class="slot" data-key="7"></div>
-            <div class="slot" data-key="8"></div>
-            <div class="slot" data-key="9"></div>
+            ${Array.from({ length: 9 }, (_, i) => `<div class="slot" data-key="${i + 1}"></div>`).join('')}
         </div>
         <button id="restart-btn" style="display: none;">Restart Game</button>
     `;
@@ -46,6 +32,7 @@ function showStar() {
     if (activeSlot) {
         activeSlot.style.backgroundImage = `url('${allImage}')`;
     }
+
     activeSlot = getRandomSlot();
     activeSlot.style.backgroundImage = `url('${flappyImage}')`;
 
@@ -56,7 +43,7 @@ function showStar() {
             document.getElementById("misses").textContent = 5 - misses;
             checkGameOver();
         }
-    }, difficulty);
+    }, intervalTime);
 }
 
 function hitStar(slot) {
@@ -64,15 +51,16 @@ function hitStar(slot) {
         slot.style.backgroundImage = `url('${crisisImage}')`;
         score++;
         document.getElementById("score").textContent = score;
-        updateDifficulty();
-        setTimeout(showStar, 500);
-    }
-}
 
-function updateDifficulty() {
-    if (score >= 20 && score % 5 === 0) {
-        difficulty = Math.max(500, difficulty - 200); 
-        isHardMode = true;
+        if (score >= 20 && !difficultyIncreased) {
+            intervalTime = 1800;
+            difficultyIncreased = true;
+        }
+        if (score % 5 === 0 && score >= 20) {
+            intervalTime = Math.max(500, intervalTime - 200);
+        }
+        
+        setTimeout(showStar, 500);
     }
 }
 
@@ -91,14 +79,14 @@ function checkGameOver() {
 function restartGame() {
     score = 0;
     misses = 0;
-    difficulty = isHardMode ? difficulty : 2000; 
-    isHardMode = false;
+    intervalTime = 2000;
+    difficultyIncreased = false;
     createBoard();
-    gameInterval = setInterval(showStar, difficulty);
+    gameInterval = setInterval(showStar, intervalTime);
 }
 
 createBoard();
-gameInterval = setInterval(showStar, difficulty);
+gameInterval = setInterval(showStar, intervalTime);
 
 document.addEventListener("keydown", (event) => {
     const key = parseInt(event.key);
