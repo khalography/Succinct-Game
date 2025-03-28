@@ -1,119 +1,117 @@
 document.addEventListener("DOMContentLoaded", function () {
-const gameContainer = document.getElementById("game-container");
-let activeSlot = null;
-let score = 0;
-let misses = 0;
-let gameInterval;
-let gameSpeed = 33000; 
-let shouldCountMisses = false;
+    const gameContainer = document.getElementById("game-container");
+    let activeSlot = null;
+    let score = 0;
+    let misses = 0;
+    let gameInterval;
+    let gameSpeed = 5000; // Start slower but reasonable
+    let shouldCountMisses = false;
 
-const allImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/all.png";  
-const flappyImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/Flappy.png";  
-const crisisImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/Crisis.png";  
+    const allImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/all.png";
+    const flappyImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/Flappy.png";
+    const crisisImage = "https://raw.githubusercontent.com/khalography/Succinct-Game/main/asset/Crisis.png";
 
-function createBoard() {  
-    gameContainer.innerHTML = `  
-        <h1>Succinct</h1>  
-        <p>Score: <span id="score">0</span> | Misses Left: <span id="misses">20</span></p>  
-        <div id="game-board">  
-            <div class="slot" data-key="1"></div>  
-            <div class="slot" data-key="2"></div>  
-            <div class="slot" data-key="3"></div>  
-            <div class="slot" data-key="4"></div>  
-            <div class="slot" data-key="5"></div>  
-            <div class="slot" data-key="6"></div>  
-            <div class="slot" data-key="7"></div>  
-            <div class="slot" data-key="8"></div>  
-            <div class="slot" data-key="9"></div>  
-        </div>  
-        <button id="restart-btn" style="display: none;">Restart Game</button>  
-    `;  
+    function createBoard() {
+        gameContainer.innerHTML = `
+            <h1>Succinct</h1>
+            <p>Score: <span id="score">0</span> | Misses Left: <span id="misses">20</span></p>
+            <div id="game-board">
+                <div class="slot" data-key="1"></div>
+                <div class="slot" data-key="2"></div>
+                <div class="slot" data-key="3"></div>
+                <div class="slot" data-key="4"></div>
+                <div class="slot" data-key="5"></div>
+                <div class="slot" data-key="6"></div>
+                <div class="slot" data-key="7"></div>
+                <div class="slot" data-key="8"></div>
+                <div class="slot" data-key="9"></div>
+            </div>
+            <button id="restart-btn" style="display: none;">Restart Game</button>
+        `;
 
-    document.querySelectorAll(".slot").forEach(slot => {  
-        slot.style.backgroundImage = `url('${allImage}')`;  
-        slot.style.backgroundSize = "cover";  
-        slot.addEventListener("click", () => hitStar(slot));  
-    });  
+        document.querySelectorAll(".slot").forEach(slot => {
+            slot.style.backgroundImage = `url('${allImage}')`;
+            slot.style.backgroundSize = "cover";
+            slot.addEventListener("click", () => hitStar(slot));
+        });
 
-    document.getElementById("restart-btn").addEventListener("click", restartGame);  
-}  
+        document.getElementById("restart-btn").addEventListener("click", restartGame);
+    }
 
-function getRandomSlot() {  
-    const slots = document.querySelectorAll(".slot");  
-    return slots[Math.floor(Math.random() * slots.length)];  
-}  
+    function getRandomSlot() {
+        const slots = document.querySelectorAll(".slot");
+        return slots[Math.floor(Math.random() * slots.length)];
+    }
 
-function showStar() {  
-    if (activeSlot) {  
-        activeSlot.style.backgroundImage = `url('${allImage}')`;  
-    }  
+    function showStar() {
+        if (activeSlot) {
+            activeSlot.style.backgroundImage = `url('${allImage}')`;
+        }
 
-    activeSlot = getRandomSlot();  
-    activeSlot.style.backgroundImage = `url('${flappyImage}')`;  
+        activeSlot = getRandomSlot();
+        activeSlot.style.backgroundImage = `url('${flappyImage}')`;
 
-    setTimeout(() => {  
-        if (activeSlot.style.backgroundImage.includes(flappyImage)) {  
-            activeSlot.style.backgroundImage = `url('${allImage}')`;  
-            if (shouldCountMisses) {  
-                misses++;  
-                document.getElementById("misses").innerText = 20 - misses;  
-                checkGameOver();  
-            }  
-        }  
-    }, gameSpeed - 1500);  
-}  
+        setTimeout(() => {
+            if (activeSlot.style.backgroundImage.includes(flappyImage)) {
+                activeSlot.style.backgroundImage = `url('${allImage}')`;
+                if (shouldCountMisses) {
+                    misses++;
+                    document.getElementById("misses").innerText = 20 - misses;
+                    checkGameOver();
+                }
+            }
+        }, 1500);
+    }
 
-function hitStar(slot) {  
-    if (slot === activeSlot && slot.style.backgroundImage.includes(flappyImage)) {  
-        slot.style.backgroundImage = `url('${crisisImage}')`;  
-        score++;  
-        document.getElementById("score").innerText = score;  
+    function hitStar(slot) {
+        if (slot === activeSlot && slot.style.backgroundImage.includes(flappyImage)) {
+            slot.style.backgroundImage = `url('${crisisImage}')`;
+            score++;
+            document.getElementById("score").innerText = score;
 
-        if (score >= 20) {  
-            shouldCountMisses = true;  
-            gameSpeed = Math.max(800, gameSpeed - 20); // Increase difficulty gradually  
-            restartGameInterval();  
-        }  
+            if (score >= 20) {
+                shouldCountMisses = true;
+                gameSpeed = Math.max(800, gameSpeed * 0.9); // Reduce speed gradually
+                restartGameInterval();
+            }
 
-        setTimeout(showStar, 1500);  
-    }  
-}  
+            setTimeout(showStar, 1500);
+        }
+    }
 
-function checkGameOver() {  
-    if (misses >= 20) {  
-        clearInterval(gameInterval);  
-        gameContainer.innerHTML = `  
-            <h1>Game Over</h1>  
-            <p>Your Score: ${score}</p>  
-            <button id="restart-btn">Restart Game</button>  
-        `;  
-        document.getElementById("restart-btn").addEventListener("click", restartGame);  
-    }  
-}  
+    function checkGameOver() {
+        if (misses >= 20) {
+            clearInterval(gameInterval);
+            gameContainer.innerHTML = `
+                <h1>Game Over</h1>
+                <p>Your Score: ${score}</p>
+                <button id="restart-btn">Restart Game</button>
+            `;
+            document.getElementById("restart-btn").addEventListener("click", restartGame);
+        }
+    }
 
-function restartGame() {  
-    score = 0;  
-    misses = 0;  
-    gameSpeed = 33000;  
-    shouldCountMisses = false;  
-    createBoard();  
-    restartGameInterval();  
-}  
+    function restartGame() {
+        score = 0;
+        misses = 0;
+        gameSpeed = 5000;
+        shouldCountMisses = false;
+        createBoard();
+        restartGameInterval();
+    }
 
-function restartGameInterval() {  
-    clearInterval(gameInterval);  
-    gameInterval = setInterval(showStar, gameSpeed);  
-}  
+    function restartGameInterval() {
+        clearInterval(gameInterval);
+        gameInterval = setInterval(showStar, gameSpeed);
+    }
 
-createBoard();  
-restartGameInterval();  
+    createBoard();
+    restartGameInterval();
 
-document.addEventListener("keydown", (event) => {  
-    const key = parseInt(event.key);  
-    if (key >= 1 && key <= 9) {  
-        hitStar(document.querySelector(`.slot[data-key="${key}"]`));  
-    }  
+    document.addEventListener("keydown", (event) => {
+        const key = parseInt(event.key);
+        if (key >= 1 && key <= 9) {
+            hitStar(document.querySelector(`.slot[data-key="${key}"]`));
+        }
+    });
 });
-
-});
-
