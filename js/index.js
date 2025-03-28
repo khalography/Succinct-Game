@@ -1,0 +1,90 @@
+document.addEventListener("DOMContentLoaded", function () {
+    const gameContainer = document.getElementById("game-container");
+    let activeSlot = null;
+    let score = 0;
+    let misses = 0;
+    let gameInterval;
+
+    function createBoard() {
+        gameContainer.innerHTML = `
+            <h1>Succinct</h1>
+            <div id="game-board">
+                <div class="slot" data-key="1"></div>
+                <div class="slot" data-key="2"></div>
+                <div class="slot" data-key="3"></div>
+                <div class="slot" data-key="4"></div>
+                <div class="slot" data-key="5"></div>
+                <div class="slot" data-key="6"></div>
+                <div class="slot" data-key="7"></div>
+                <div class="slot" data-key="8"></div>
+                <div class="slot" data-key="9"></div>
+            </div>
+            <button id="restart-btn" style="display: none;">Restart Game</button>
+        `;
+
+        document.querySelectorAll(".slot").forEach(slot => {
+            slot.style.backgroundImage = "url('../all.png')";
+            slot.addEventListener("click", () => hitStar(slot));
+        });
+
+        document.getElementById("restart-btn").addEventListener("click", restartGame);
+    }
+
+    function getRandomSlot() {
+        return document.querySelectorAll(".slot")[Math.floor(Math.random() * 9)];
+    }
+
+    function showStar() {
+        if (activeSlot) {
+            activeSlot.style.backgroundImage = "url('../all.png')";
+        }
+
+        activeSlot = getRandomSlot();
+        activeSlot.style.backgroundImage = "url('../Flappy.png')";
+
+        setTimeout(() => {
+            if (activeSlot.style.backgroundImage.includes("Flappy.png")) {
+                activeSlot.style.backgroundImage = "url('../all.png')";
+                misses++;
+                checkGameOver();
+            }
+        }, 1000);
+    }
+
+    function hitStar(slot) {
+        if (slot === activeSlot && slot.style.backgroundImage.includes("Flappy.png")) {
+            slot.style.backgroundImage = "url('../Crisis.png')";
+            score++;
+            setTimeout(showStar, 500);
+        }
+    }
+
+    function checkGameOver() {
+        if (misses >= 5) {
+            clearInterval(gameInterval);
+            gameContainer.innerHTML = `
+                <h1>Game Over</h1>
+                <p>Your Score: ${score}</p>
+                <button id="restart-btn">Restart Game</button>
+            `;
+            document.getElementById("restart-btn").addEventListener("click", restartGame);
+        }
+    }
+
+    function restartGame() {
+        score = 0;
+        misses = 0;
+        createBoard();
+        gameInterval = setInterval(showStar, 2000);
+    }
+
+    createBoard();
+    gameInterval = setInterval(showStar, 2000);
+
+    document.addEventListener("keydown", (event) => {
+        const key = parseInt(event.key);
+        if (key >= 1 && key <= 9) {
+            hitStar(document.querySelector(`.slot[data-key="${key}"]`));
+        }
+    });
+});
